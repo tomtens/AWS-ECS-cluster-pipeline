@@ -1,0 +1,6 @@
+[
+  {
+    "name": "<YOUR CONTAINER NAME>",
+    "imageUri": "<YOUR ECR REPO URI:TAG>"
+  }
+]

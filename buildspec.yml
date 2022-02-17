@@ -1,0 +1,26 @@
+version: 0.2 
+ 
+phases: 
+  install: 
+    commands: 
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+  pre_build: 
+    commands: 
+    - echo "AWS VERSION:" $(aws --version)
+    - echo $'\nLogging in to Amazon ECR...'
+    - aws ecr get-login-password --region <YOUR REGION> | docker login --username AWS --password-stdin <YOUR ECR URL>
+  build: 
+    commands: 
+    - echo "DOCKER VERSION:" $(docker --version)
+    - echo "BUILD STARTED ON:" `date` 
+    - echo "Building the Docker image..." 
+    - docker build -t lolcat-docker-repo . 
+    - echo "Tagging the image..."
+    - docker tag lolcat-docker-repo:latest <YOUR ECR REPO URI:TAG>
+  post_build: 
+    commands: 
+    - echo "BUILD COMPLETED ON:" `date` 
+    - echo "Pushing to repo..."
+    - docker push <YOUR ECR REPO URI:latest>
+
