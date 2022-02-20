@@ -15,9 +15,9 @@ phases:
     - echo "DOCKER VERSION:" $(docker --version)
     - echo "BUILD STARTED ON:" `date` 
     - echo "Building the Docker image..." 
-    - docker build -t lolcat-docker-repo . 
+    - docker build -t youtube . 
     - echo "Tagging the image..."
-    - docker tag lolcat-docker-repo:latest <YOUR ECR REPO URI:TAG>
+    - docker tag youtube:latest <YOUR ECR REPO URI:TAG>
   post_build: 
     commands: 
     - echo "BUILD COMPLETED ON:" `date` 
